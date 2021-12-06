@@ -1,13 +1,19 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ProductsModule } from './products/products.module';
-
-
+import { Module } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { ProductsModule } from "./products/products.module";
+import { ConfigModule } from "@nestjs/config";
+import configuration from "./config/configuration";
 
 @Module({
-  imports: [ProductsModule,
-    MongooseModule.forRoot('mongodb+srv://rdvNestRestApi:Q$U.$xGD6a4w$UN@cluster0.7p4j8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')],
-  controllers: [],
-  providers: [],
+  imports: [
+    ProductsModule,
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(
+      `mongodb+srv://rdvNestRestApi:${process.env.DATABASE_PASSWORD}@cluster0.7p4j8.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`
+    ),
+  ],
 })
 export class AppModule {}
