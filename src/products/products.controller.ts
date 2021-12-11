@@ -9,15 +9,19 @@ import {
     Param,
     Post,
     Put,
+    UseGuards,
 } from "@nestjs/common";
+import { AuthService } from "src/core/auth/auth.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { ProductService } from "./products.service";
 import { Product } from "./schemas/product.schema";
-
+import { JwtAuthGuard } from '../core/auth/guards/jwt-auth.guard'
 @Controller("products")
 export class ProductsController {
-    constructor(private readonly productService: ProductService) { }
+    constructor(private readonly productService: ProductService, private auth: AuthService) { }
+
+    @UseGuards(JwtAuthGuard)
 
     @Get()
     getAll(): Promise<Product[]> {

@@ -3,10 +3,12 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ProductsModule } from "./products/products.module";
 import { ConfigModule } from "@nestjs/config";
 import configuration from "./config/configuration";
+import { AuthModule } from "./core/auth/auth.module";
 
 @Module({
   imports: [
     ProductsModule,
+    AuthModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
